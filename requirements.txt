@@ -1,0 +1,48 @@
+atomicwrites==1.4.0
+attrs @ file:///opt/conda/conda-bld/attrs_1642510447205/work
+black @ file:///home/conda/feedstock_root/build_artifacts/black-recipe_1648499330704/work
+Bottleneck @ file:///C:/ci/bottleneck_1648029530934/work
+certifi==2020.6.20
+cfgv==3.3.1
+click @ file:///D:/bld/click_1648793667490/work
+colorama @ file:///tmp/build/80754af9/colorama_1607707115595/work
+cycler @ file:///tmp/build/80754af9/cycler_1637851556182/work
+dataclasses @ file:///home/conda/feedstock_root/build_artifacts/dataclasses_1628958434797/work
+distlib==0.3.4
+filelock==3.6.0
+fonttools==4.25.0
+hypothesis @ file:///tmp/build/80754af9/hypothesis_1638452402466/work
+identify==2.4.12
+iniconfig @ file:///home/linux1/recipes/ci/iniconfig_1610983019677/work
+kiwisolver @ file:///C:/ci_310/kiwisolver_1642083321497/work
+matplotlib @ file:///C:/ci/matplotlib-suite_1647423638658/work
+mkl-fft==1.3.1
+mkl-random @ file:///C:/ci_310/mkl_random_1643050563308/work
+mkl-service==2.4.0
+munkres==1.1.4
+mypy-extensions @ file:///D:/bld/mypy_extensions_1649013486700/work
+nodeenv==1.6.0
+numexpr @ file:///C:/ci_310/numexpr_1642084889105/work
+numpy @ file:///C:/ci/numpy_and_numpy_base_1649782984482/work
+packaging @ file:///tmp/build/80754af9/packaging_1637314298585/work
+pandas @ file:///C:/ci/pandas_1650373461903/work
+pathspec @ file:///home/conda/feedstock_root/build_artifacts/pathspec_1626613672358/work
+Pillow==9.0.1
+platformdirs @ file:///home/conda/feedstock_root/build_artifacts/platformdirs_1645298319244/work
+pluggy @ file:///C:/ci/pluggy_1648042746254/work
+py @ file:///opt/conda/conda-bld/py_1644396412707/work
+pyparsing @ file:///tmp/build/80754af9/pyparsing_1635766073266/work
+pytest==7.1.1
+python-dateutil @ file:///tmp/build/80754af9/python-dateutil_1626374649649/work
+pytz==2021.3
+PyYAML==6.0
+sip==4.19.13
+six @ file:///tmp/build/80754af9/six_1644875935023/work
+sortedcontainers @ file:///tmp/build/80754af9/sortedcontainers_1623949099177/work
+toml==0.10.2
+tomli @ file:///tmp/build/80754af9/tomli_1637314251069/work
+tornado @ file:///C:/ci_310/tornado_1642093111997/work
+typed-ast @ file:///D:/bld/typed-ast_1650219020334/work
+typing_extensions @ file:///home/conda/feedstock_root/build_artifacts/typing_extensions_1650370875435/work
+virtualenv==20.14.1
+wincertstore==0.2

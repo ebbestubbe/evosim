@@ -1,0 +1,11 @@
+name: evosim_env
+channels:
+  - defaults
+dependencies:
+  - pandas
+  - matplotlib
+  - pytest
+  - black=22.3.0
+  - pip
+  - hypothesis
+prefix: C:\Users\U371930\Miniconda3\envs\evosim_env
