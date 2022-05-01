@@ -1,11 +1,13 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-from evosim.Guy import Guy
+
 from evosim.Board import Board
+from evosim.Guy import Guy
+from evosim.visualize_board import plot_guys
 
 
-def main():
+def mainthing():
     guys = [Guy(pos=(30, 5), speed=1)]  # , Guy(pos=(6,9), speed=3)]
     board = Board(guys)
     guy0_px = [board.guys[0].pos[0]]
@@ -31,6 +33,20 @@ def main():
     ax.plot(df["guy0_px"], df["guy0_py"], "bo", label="pos")
     ax.plot(df["guy0_tx"], df["guy0_ty"], "ro", label="target")
     ax.legend()
+    plt.show()
+
+
+def main():
+    guy0 = Guy(pos=(0, 0), speed=1, target=(12, -5), name="guy0")
+    guy1 = Guy(pos=(-10, 10), speed=2, target=(234, 5), name="guy1")
+    guys = [guy0, guy1]
+    board = Board(guys=guys)
+    df = board.propagate_n(100)
+    print(df)
+
+    fig, ax = plt.subplots()
+    plot_guys(df, ax=ax)
+
     plt.show()
 
 
