@@ -2,22 +2,25 @@ import numpy as np
 
 
 class Guy:
-    def __init__(self, pos, speed):
+    def __init__(self, pos, speed, target, name=None):
         self.pos = pos
         self.speed = speed
-        self.target = (None, None)
+        self.target = target
+        self.name = name
 
     def move(self, new_pos):
         self.pos = new_pos
 
-    def set_target(self, board):
-        print(self.target)
-        print(self.pos)
-        print(self.target == self.pos)
-        if (self.target == self.pos) or (
-            self.target[0] is None and self.target[1] is None
-        ):
-            self.target = (-0.5) * 10
+    def get_state(self):
+        return {
+            "posx": self.pos[0],
+            "posy": self.pos[1],
+            "tarx": self.target[0],
+            "tary": self.target[1],
+        }
+
+    def set_target(self):
+        ...
 
 
 def calc_newpos(old_pos, target, speed):

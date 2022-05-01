@@ -1,13 +1,12 @@
-from evosim.Guy import Guy
-from evosim.Guy import calc_newpos
 import numpy as np
-from hypothesis import given
-from hypothesis import strategies as st
+
+from evosim.Guy import calc_newpos
+from evosim.Guy import Guy
 
 
 def test_guy():
     pos = (1, 1)
-    guy = Guy(pos, None)
+    guy = Guy(pos, None, target=(None, None))
     new_pos = (5, 5)
     guy.move(new_pos=new_pos)
     assert guy.pos == new_pos
