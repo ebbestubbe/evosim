@@ -39,39 +39,31 @@ def test_board_propagate_multiple_steps():
 
 
 def test_board_propagate_n():
-    guy = Guy(pos=(30, 5), speed=1, target=(30, 20), name="guy0")
+    guy = Guy(pos=(30, 5), speed=1, target=(30, 20), name="guy0", energy=9)
     guys = [guy]
     board = Board(guys)
     df = board.propagate_n(2)
     guy_names = ["guy0"]
-    measures = [
-        "posx",
-        "posy",
-        "tarx",
-        "tary",
-    ]
+    measures = ["posx", "posy", "tarx", "tary", "energy"]
     columns = pd.MultiIndex.from_product([guy_names, measures])
     df_expected = pd.DataFrame(
         columns=columns,
-        data=np.array([[30, 30, 30], [5, 6, 7], [30, 30, 30], [20, 20, 20]]).T,
+        data=np.array(
+            [[30, 30, 30], [5, 6, 7], [30, 30, 30], [20, 20, 20], [9, 8, 7]]
+        ).T,
     )
     assert_frame_equal(df, df_expected, check_dtype=False)
 
 
 def test_board_propagate_n_2():
     guy0 = Guy(pos=(30, 5), speed=1, target=(30, 20), name="guy0")
-    guy1 = Guy(pos=(0, 0), speed=2, target=(100, 0), name="guy1")
+    guy1 = Guy(pos=(0, 0), speed=2, target=(100, 0), name="guy1", energy=13)
 
     guys = [guy0, guy1]
     board = Board(guys)
     df = board.propagate_n(2)
     guy_names = ["guy0", "guy1"]
-    measures = [
-        "posx",
-        "posy",
-        "tarx",
-        "tary",
-    ]
+    measures = ["posx", "posy", "tarx", "tary", "energy"]
     columns = pd.MultiIndex.from_product([guy_names, measures])
     df_expected = pd.DataFrame(
         columns=columns,
@@ -81,10 +73,36 @@ def test_board_propagate_n_2():
                 [5, 6, 7],
                 [30, 30, 30],
                 [20, 20, 20],
+                [100, 99, 98],
                 [0, 2, 4],
                 [0, 0, 0],
                 [100, 100, 100],
                 [0, 0, 0],
+                [13, 12, 11],
+            ]
+        ).T,
+    )
+    assert_frame_equal(df, df_expected, check_dtype=False)
+
+
+def test_board_propagate_n_get_energy():
+    guy0 = Guy(pos=(30, 5), speed=1, target=(30, 20), name="guy0", energy=80)
+
+    guys = [guy0]
+    board = Board(guys)
+    df = board.propagate_n(2)
+    guy_names = ["guy0"]
+    measures = ["posx", "posy", "tarx", "tary", "energy"]
+    columns = pd.MultiIndex.from_product([guy_names, measures])
+    df_expected = pd.DataFrame(
+        columns=columns,
+        data=np.array(
+            [
+                [30, 30, 30],
+                [5, 6, 7],
+                [30, 30, 30],
+                [20, 20, 20],
+                [80, 79, 78],
             ]
         ).T,
     )

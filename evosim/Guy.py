@@ -2,14 +2,20 @@ import numpy as np
 
 
 class Guy:
-    def __init__(self, pos, speed, target, name=None):
+    def __init__(self, pos, speed, target, name=None, energy=100, energy_strat=None):
         self.pos = pos
         self.speed = speed
         self.target = target
         self.name = name
+        self.energy = energy
+        if energy_strat is None:
+            self.energy_strat = self.simple_energy_strat
 
     def move(self, new_pos):
         self.pos = new_pos
+
+    def update_energy(self):
+        self.energy_strat()
 
     def get_state(self):
         return {
@@ -17,10 +23,14 @@ class Guy:
             "posy": self.pos[1],
             "tarx": self.target[0],
             "tary": self.target[1],
+            "energy": self.energy,
         }
 
     def set_target(self):
         ...
+
+    def simple_energy_strat(self):
+        self.energy = self.energy - 1
 
 
 def calc_newpos(old_pos, target, speed):

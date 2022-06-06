@@ -12,6 +12,7 @@ class Board:
             guy.set_target()
             newpos = calc_newpos(old_pos=guy.pos, target=guy.target, speed=guy.speed)
             guy.move(newpos)
+            guy.update_energy()
 
     def propagate_n(self, n):
         guy_states = {guy.name: [guy.get_state()] for guy in self.guys}

@@ -75,3 +75,23 @@ def test_calc_newpos_None():
     speed = 6
     new_pos = calc_newpos(old_pos, target, speed)
     assert new_pos == old_pos
+
+
+def test_default_energy_strat():
+    """Default energy is 100. Should use the default energy strat: Subtract 1 every step"""
+    guy = Guy(pos=(1, 1), speed=None, target=(None, None))
+    assert guy.energy == 100
+    guy.update_energy()
+    assert guy.energy == 99
+    guy.update_energy()
+    assert guy.energy == 98
+
+
+def test_default_energy_strat():
+    """Default energy is custom. Should use the default energy strat: Subtract 1 every step"""
+    guy = Guy(pos=(1, 1), speed=None, target=(None, None), energy=12)
+    assert guy.energy == 12
+    guy.update_energy()
+    assert guy.energy == 11
+    guy.update_energy()
+    assert guy.energy == 10
