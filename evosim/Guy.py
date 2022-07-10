@@ -8,6 +8,7 @@ class Guy:
         self.target = target
         self.name = name
         self.energy = energy
+        self.alive = True
         if energy_strat is None:
             self.energy_strat = self.simple_energy_strat
 
@@ -16,6 +17,8 @@ class Guy:
 
     def update_energy(self):
         self.energy_strat()
+        if self.energy <= 0:
+            self.alive = False
 
     def get_state(self):
         return {

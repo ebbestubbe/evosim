@@ -87,7 +87,7 @@ def test_default_energy_strat():
     assert guy.energy == 98
 
 
-def test_default_energy_strat():
+def test_default_energy_strat_custom_start():
     """Default energy is custom. Should use the default energy strat: Subtract 1 every step"""
     guy = Guy(pos=(1, 1), speed=None, target=(None, None), energy=12)
     assert guy.energy == 12
@@ -95,3 +95,14 @@ def test_default_energy_strat():
     assert guy.energy == 11
     guy.update_energy()
     assert guy.energy == 10
+
+
+def test_guy_alive_when_energy_above_0():
+    guy = Guy(pos=(0, 0), speed=None, target=(None, None), energy=1)
+    assert guy.alive
+
+
+def test_guy_dies_when_energy_0():
+    guy = Guy(pos=(0, 0), speed=None, target=(None, None), energy=1)
+    guy.update_energy()
+    assert not guy.alive
