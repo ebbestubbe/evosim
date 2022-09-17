@@ -1,6 +1,7 @@
 name: evosim_env
 channels:
   - defaults
+  - conda-forge
 dependencies:
   - pandas
   - matplotlib
@@ -8,4 +9,3 @@ dependencies:
   - black=22.3.0
   - pip
   - hypothesis
-prefix: C:\Users\U371930\Miniconda3\envs\evosim_env
