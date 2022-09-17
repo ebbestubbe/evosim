@@ -107,3 +107,11 @@ def test_board_propagate_n_get_energy():
         ).T,
     )
     assert_frame_equal(df, df_expected, check_dtype=False)
+
+
+def test_board_updates_energy():
+    assert False
+
+
+def test_board_updating_kills_guy():
+    assert False

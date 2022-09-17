@@ -1,6 +1,8 @@
-- energy calculation
-- must die when energy reaches 0, regardless of strat
+x energy calculation
+x must die when energy reaches 0, regardless of strat
 - plot some marker on map when a guy is dead
+
+- integration test that updating the board also kills the guys who goes to 0 energy
 
 - be able to eat to get energy
 

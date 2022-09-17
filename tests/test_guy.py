@@ -106,3 +106,7 @@ def test_guy_dies_when_energy_0():
     guy = Guy(pos=(0, 0), speed=None, target=(None, None), energy=1)
     guy.update_energy()
     assert not guy.alive
+
+
+def test_updating_dead_guy_does_nothing():
+    assert False
