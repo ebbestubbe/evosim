@@ -18,6 +18,7 @@ def main():
     fig, ax = plt.subplots()
     plot_guys(df, ax=ax)
 
+
     plt.show()
 
 

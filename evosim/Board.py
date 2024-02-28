@@ -9,11 +9,9 @@ class Board:
 
     def propagate(self):
         for guy in self.guys:
-            guy.set_target()
-            newpos = calc_newpos(old_pos=guy.pos, target=guy.target, speed=guy.speed)
-            guy.move(newpos)
-            guy.update_energy()
-
+            # newpos = calc_newpos(old_pos=guy.pos, target=guy.target, speed=guy.speed)
+            guy.update_step()
+            
     def propagate_n(self, n):
         guy_states = {guy.name: [guy.get_state()] for guy in self.guys}
         for i in range(n):

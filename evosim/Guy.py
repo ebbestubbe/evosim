@@ -11,9 +11,13 @@ class Guy:
         self.alive = True
         if energy_strat is None:
             self.energy_strat = self.simple_energy_strat
-
-    def move(self, new_pos):
-        self.pos = new_pos
+    def update_step(self):
+        
+        self.update_energy()
+        self.move_towards_target()
+        
+    def move_towards_target(self):
+        self.pos = calc_newpos(old_pos=self.pos, target=self.target, speed=self.speed)
 
     def update_energy(self):
         self.energy_strat()
@@ -29,24 +33,32 @@ class Guy:
             "energy": self.energy,
         }
 
-    def set_target(self):
-        ...
-
     def simple_energy_strat(self):
         self.energy = self.energy - 1
 
 
 def calc_newpos(old_pos, target, speed):
+    """Calculate new position, within the allowed speed.
+
+    Args:
+        old_pos (_type_): current position
+        target (_type_): Target to move towards
+        speed (_type_): speed/maximum distance the guy can be moved.
+
+    Returns:
+        _type_: new position.
+    """
     if target is None:
         return old_pos
 
     dist_0 = target[0] - old_pos[0]
     dist_1 = target[1] - old_pos[1]
     distance = np.sqrt(dist_0**2 + dist_1**2)
-
-    if distance < speed:
+    
+    if distance < speed: # If the target is within reach, move to the spot.
         return target
 
+    # We cant make it all the way, just move as close as possible:
     cos_angle = dist_0 / distance
     sin_angle = dist_1 / distance
     speed_x = speed * cos_angle
