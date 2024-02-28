@@ -97,15 +97,15 @@ def test_default_energy_strat_custom_start():
     assert guy.energy == 10
 
 
-def test_guy_alive_when_energy_above_0():
-    guy = Guy(pos=(0, 0), speed=None, target=(None, None), energy=1)
-    assert guy.alive
+# def test_guy_alive_when_energy_above_0():
+#     guy = Guy(pos=(0, 0), speed=None, target=(None, None), energy=1)
+#     assert guy.alive
 
 
-def test_guy_dies_when_energy_0():
-    guy = Guy(pos=(0, 0), speed=None, target=(None, None), energy=1)
-    guy.update_energy()
-    assert not guy.alive
+# def test_guy_dies_when_energy_0():
+#     guy = Guy(pos=(0, 0), speed=None, target=(None, None), energy=1)
+#     guy.update_energy()
+#     assert not guy.alive
 
 
 def test_updating_dead_guy_does_nothing():

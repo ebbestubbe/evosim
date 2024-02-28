@@ -1,40 +1,76 @@
 import numpy as np
 
-
+#Energy on hold for now, just move them towards current target.
 class Guy:
-    def __init__(self, pos, speed, target, name=None, energy=100, energy_strat=None):
+    def __init__(self, pos, speed, name=None):#, energy=0, energy_strat=None):
         self.pos = pos
         self.speed = speed
-        self.target = target
+        self.target = None
         self.name = name
-        self.energy = energy
-        self.alive = True
-        if energy_strat is None:
-            self.energy_strat = self.simple_energy_strat
-    def update_step(self):
-        
-        self.update_energy()
+        self.food_eaten = 0
+        # self.energy = energy
+        # self.alive = True
+        # if energy_strat is None:
+        #     self.energy_strat = self.simple_energy_strat
+    def update_step(self,food_list):
+
+        # self.update_energy()
+        self.update_target(food_list)
+
         self.move_towards_target()
+    
+    def eat_food(self):
+        self.food_eaten += 1
+    
+    def update_target(self, food_list):
+        if len(food_list) == 0:
+            self.target = None
+            return
+        #Find nearest food
+        smallest_dist = np.inf
+        smallest_index = None
+        for j, food in enumerate(food_list):
+            dist_0 = self.pos[0] - food.pos[0]
+            dist_1 = self.pos[1] - food.pos[1]
+            distance = np.sqrt(dist_0**2 + dist_1**2)
+            if distance < smallest_dist:
+                smallest_dist = distance
+                smallest_index = j
         
+        self.target = food_list[smallest_index].pos
+
     def move_towards_target(self):
-        self.pos = calc_newpos(old_pos=self.pos, target=self.target, speed=self.speed)
+        if self.target is None: #Do nothing
+            return
+        else: # Move towards target
+            self.pos = calc_newpos(old_pos=self.pos, target=self.target, speed=self.speed)
 
     def update_energy(self):
         self.energy_strat()
-        if self.energy <= 0:
-            self.alive = False
+        # if self.energy <= 0:
+        #     self.alive = False
 
     def get_state(self):
+        if self.target is None: # Fix this to handle the "None" at self.target(maybe class?)
+            return {
+                "posx": self.pos[0],
+                "posy": self.pos[1],
+                "tarx": None,
+                "tary": None,
+                "food_eaten": self.food_eaten
+                # "energy": self.energy,
+            }
         return {
             "posx": self.pos[0],
             "posy": self.pos[1],
             "tarx": self.target[0],
             "tary": self.target[1],
-            "energy": self.energy,
+            "food_eaten": self.food_eaten
+            # "energy": self.energy,
         }
 
-    def simple_energy_strat(self):
-        self.energy = self.energy - 1
+    # def simple_energy_strat(self):
+    #     self.energy = self.energy - 1
 
 
 def calc_newpos(old_pos, target, speed):
