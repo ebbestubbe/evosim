@@ -12,8 +12,9 @@ class Board:
     def propagate(self):
         # Move all the guys.
         # Eat all the food and note the guys for eaten food.
-        foodpos = (random.random()*100, random.random()*100)
-        self.food_list.append(Food(foodpos))
+        while len(self.food_list) < 100:
+            foodpos = (random.random()*100, random.random()*100)
+            self.food_list.append(Food(foodpos))
         for guy in self.guys:
             # newpos = calc_newpos(old_pos=guy.pos, target=guy.target, speed=guy.speed)
             guy.update_step(self.food_list)
@@ -22,16 +23,26 @@ class Board:
 
     def propagate_n(self, n):
         guy_states = {guy.name: [guy.get_state()] for guy in self.guys}
+        food_available = [] # Update this to some "board state"
         for i in range(n):
             self.propagate()
             for guy in self.guys:
                 state = guy.get_state()
                 guy_states[guy.name].append(state)
-        df_results = {
+                food_available.append(len(self.food_list))
+        df_results_guys = {
             name: pd.DataFrame.from_dict(states) for name, states in guy_states.items()
         }
-        df_results = pd.concat(df_results, axis=1)
-        return df_results
+        df_results_guys = pd.concat(df_results_guys, axis=1)
+        # df_results_board = pd.DataFrame(
+        #     columns=pd.MultiIndex.from_tuples(
+        #             [
+        #                 ("board", "food_available")
+        #             ]
+        #         ),
+        #     data=food_available
+        # )
+        return df_results_guys#, df_results_board
     
     def guys_eat(self):
         df_distmatrix = self.get_distmatrix()
@@ -72,5 +83,5 @@ def find_eaten_food(df_distmatrix):
             for food_ind, eaten in row.items():
                 if eaten:
                     removed_food.add(food_ind)
-                eat_dict[guy_ind].add(food_ind)
+                    eat_dict[guy_ind].add(food_ind)
         return removed_food, eat_dict

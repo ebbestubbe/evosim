@@ -1,15 +1,15 @@
-- be able to eat to get energy
-
-- different speeds/attributes spend different amounts of energy
+visualize
 - plotting histogram of speed and pother attributes over time.
-
-
+- number of turns between feeding correlated with speed.
 - Animate the process
+
+"science":
+- different speeds/attributes spend different amounts of energy
 - Breed for next generation
 
-- There is a bug in the way the food eating is handled.
 
-def get_state(self):
-    if self.target is None: # Fix this to handle the "None" at self.target(maybe class?)
+code:
+- Hardcoded board size etc.
+- profile and optimize(currently quite slow)
 
 

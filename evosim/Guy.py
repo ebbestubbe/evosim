@@ -1,4 +1,8 @@
 import numpy as np
+import random
+from hrid import HRID
+
+hruuid = HRID()
 
 #Energy on hold for now, just move them towards current target.
 class Guy:
@@ -6,12 +10,23 @@ class Guy:
         self.pos = pos
         self.speed = speed
         self.target = None
-        self.name = name
+        if name is not None:
+
+            self.name = name
+        else:
+            self.name = hruuid.generate()
         self.food_eaten = 0
         # self.energy = energy
         # self.alive = True
         # if energy_strat is None:
         #     self.energy_strat = self.simple_energy_strat
+    
+    @classmethod
+    def random(cls):
+        pos = (random.random()*100, random.random()*100)
+        speed = random.random()*1
+        return cls(pos=pos, speed=speed)
+    
     def update_step(self,food_list):
 
         # self.update_energy()
