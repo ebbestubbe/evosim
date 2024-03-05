@@ -1,7 +1,7 @@
 import numpy as np
 import random
 from hrid import HRID
-
+import numpy as np
 hruuid = HRID()
 
 #Energy on hold for now, just move them towards current target.
@@ -24,9 +24,20 @@ class Guy:
     @classmethod
     def random(cls):
         pos = (random.random()*100, random.random()*100)
-        speed = random.random()*1
+        speed = random.random()*5
         return cls(pos=pos, speed=speed)
     
+    @classmethod
+    def random_pos(cls):
+        pos = (random.random()*100, random.random()*100)
+        speed = 1
+        return cls(pos=pos, speed=speed)
+    
+    def spawn_child(self):
+        pos = (random.random()*100, random.random()*100)
+        speed = max(np.random.normal(loc=self.speed, scale = 0.1), 0.001)
+        return Guy(pos=pos, speed=speed)
+
     def update_step(self,food_list):
 
         # self.update_energy()

@@ -9,19 +9,17 @@ from evosim.visualize_board import plot_board
 
 
 def main():
-    #guy0 = Guy(pos=(0, 0), speed=1, name="guy0")
-    #guy1 = Guy(pos=(20, 10), speed=2, name="guy1")#, energy=20)
+    running_experiment()
 
-    #guys = [guy0, guy1, Guy.random()]
-
-    n_guys = 50
-    guys = [Guy.random() for _ in range(n_guys)]
+def single_experiment():
+    n_guys = 5
+    guys = [Guy.random_pos() for _ in range(n_guys)]
 
     #food_list = [Food((5,5)), Food((0,10)), Food((5,50))]
     food_list = []
     board = Board(guys=guys, food_list=food_list)
     
-    df_guys = board.propagate_n(1000)
+    df_guys = board.propagate_n(100)
     print(df_guys)
 
     fig, ax = plt.subplot_mosaic(
@@ -31,7 +29,7 @@ def main():
             ["map"],
             ["map"],
             ["food_eaten"],
-            ["food_available"]
+            # ["food_available"]
         ]
     )
     plot_board(guys, df_guys, ax=ax)
@@ -39,6 +37,34 @@ def main():
 
     plt.show()
 
+def running_experiment():
+    n_guys = 5
+    n_generations = 10
+    guys = [Guy.random_pos() for _ in range(n_guys)]
+    food_list = []
+    board = Board(guys=guys, food_list=food_list)
+    
+    df_guys = board.propagate_n(100)
+    for i in range(n_generations):
+        print([guy.speed for guy in guys])
+        new_guys = [guy.spawn_child() for guy in guys]
+        guys = new_guys
+        food_list = []
+        board = Board(guys=guys, food_list=food_list)
+        df_guys = board.propagate_n(100)
+    print([guy.speed for guy in guys])
+    fig, ax = plt.subplot_mosaic(
+        [
+            ["map"],
+            ["map"],
+            ["map"],
+            ["map"],
+            ["food_eaten"],
+            # ["food_available"]
+        ]
+    )
+    plot_board(guys, df_guys, ax=ax)
+    plt.show()
 
 if __name__ == "__main__":
     main()

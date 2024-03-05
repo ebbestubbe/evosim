@@ -6,6 +6,7 @@ visualize
 "science":
 - different speeds/attributes spend different amounts of energy
 - Breed for next generation
+- successfull guys breed more
 
 
 code:

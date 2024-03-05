@@ -74,8 +74,8 @@ def plot_board(guys, df_guys, ax):
     for i, guy_name in enumerate(guy_names):
         color = colors[i]
         ax['map'].plot(df_guys[(guy_name, "posx")], df_guys[(guy_name, "posy")], marker='.',color=color)
-        ax['food_eaten'].plot(df_guys[(guy_name, "food_eaten")], color=color, label=guy_dict[guy_name].name)
-    #ax['food_eaten'].legend()
+        ax['food_eaten'].plot(df_guys[(guy_name, "food_eaten")], color=color, label=f"speed: {guy_dict[guy_name].speed:.2f}; eaten: {guy_dict[guy_name].food_eaten}")
+    ax['food_eaten'].legend()
     #ax["food_available"].plot(df_board[("board", "food_available")])
 
 
