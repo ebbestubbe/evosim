@@ -42,17 +42,9 @@ class Guy:
 
     def update_step(self,target):
 
-        # self.update_energy()
-        #self.update_target(food_list)
-        
-        # self.update_target_2(food_list)
-        #self.update_target_3(food_distance)
         self.target=target
 
         self.move_towards_target()
-    
-    def eat_food(self):
-        self.food_eaten += 1
     
     def update_target(self, food_list):
         if len(food_list) == 0:
@@ -71,26 +63,16 @@ class Guy:
                 smallest_index = j
         self.target = food_list[smallest_index].pos
 
-    # def update_target_2(self, food_list):
-    #     if len(food_list) == 0:
-    #         self.target = None
-    #         return
-    #     food_pos = [[food.pos[0], food.pos[1]] for food in food_list]
-    #     distance_list = pairwise_distances([[self.pos[0], self.pos[1]]], food_pos)[0]
-    #     min_ind = distance_list.argmin()
-    #     self.target = food_list[min_ind].pos
-
-
     def move_towards_target(self):
         if self.target is None: #Do nothing
             return
         else: # Move towards target
             self.pos = calc_newpos(old_pos=self.pos, target=self.target, speed=self.speed)
 
-    def update_energy(self):
-        self.energy_strat()
-        # if self.energy <= 0:
-        #     self.alive = False
+    # def update_energy(self):
+    #     self.energy_strat()
+    #     # if self.energy <= 0:
+    #     #     self.alive = False
 
     def get_state(self):
         if self.target is None: # Fix this to handle the "None" at self.target(maybe class?)

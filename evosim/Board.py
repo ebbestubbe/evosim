@@ -49,21 +49,15 @@ class Board:
         return df_results_guys#, df_results_board
     
     def guys_eat(self):
-        #df_distmatrix = self.get_distmatrix()
         df_distmatrix = self.get_distmatrix()
-        # Simple first approximation: All the guys eat all the food they can within their distance of X
-        # Get the distance for all guys to all food.
-        
         # Find the food that was eaten and find out which food was eaten by whom:
-        removed_food, eat_dict = find_eaten_food(df_distmatrix)
-        # Add points:
-        for eater_index, eaten in eat_dict.items():
-            for _ in range(len(eaten)): # The guy can eat more than 1 food if lucky.
-                self.guys[eater_index].eat_food() # Assume all food counts for 1 point for now.
+        removed_food, food_per_guy = find_eaten_food(df_distmatrix=df_distmatrix)
         # Remove the food 
         for food_index in sorted(removed_food, reverse=True):
             del self.food_list[food_index]
-
+        # Add points:
+        for index, food in food_per_guy.items():
+            self.guys[index].food_eaten += food
     
     def get_distmatrix(self):
         
@@ -74,18 +68,14 @@ class Board:
         food_pos = [[food.pos[0], food.pos[1]] for food in self.food_list]
         df_distmatrix = pd.DataFrame(pairwise_distances(guy_pos, food_pos))
         return df_distmatrix
-        
+
 
 def find_eaten_food(df_distmatrix):
-        # Find all food that will be eaten:
-        food_distance = 1 # Length of mouth
-        eat_match = df_distmatrix < food_distance
-        removed_food = set() #Set of the food that has been eaten this turn
-        eat_dict = {} # dict of what food each guy has eaten.
-        for guy_ind, row in eat_match.iterrows():
-            eat_dict[guy_ind] = set()
-            for food_ind, eaten in row.items():
-                if eaten:
-                    removed_food.add(food_ind)
-                    eat_dict[guy_ind].add(food_ind)
-        return removed_food, eat_dict
+    # Find all food that will be eaten:
+    food_distance = 1 # Length of mouth
+    eat_match = df_distmatrix < food_distance
+    s = eat_match.any(axis=0)
+    removed_food = s[s].index
+    eaten_per_guy = eat_match.sum(axis=1)
+    above_0 = eaten_per_guy[eaten_per_guy>0]
+    return removed_food, above_0

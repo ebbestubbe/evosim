@@ -8,9 +8,7 @@ visualize
 - Breed for next generation
 - successfull guys breed more
 
-
 code:
 - Hardcoded board size etc.
-- profile and optimize(currently quite slow)
 
 
