@@ -9,17 +9,17 @@ from evosim.visualize_board import plot_board
 
 
 def main():
-    running_experiment()
+    single_experiment()
 
 def single_experiment():
-    n_guys = 5
+    n_guys = 20
     guys = [Guy.random_pos() for _ in range(n_guys)]
 
     #food_list = [Food((5,5)), Food((0,10)), Food((5,50))]
     food_list = []
     board = Board(guys=guys, food_list=food_list)
     
-    df_guys = board.propagate_n(100)
+    df_guys = board.propagate_n(1000)
     print(df_guys)
 
     fig, ax = plt.subplot_mosaic(

@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from evosim.Food import Food
 import random
+from sklearn.metrics.pairwise import pairwise_distances
 SEED = 42
 class Board:
     def __init__(self, guys, food_list):
@@ -15,9 +16,12 @@ class Board:
         while len(self.food_list) < 100:
             foodpos = (random.random()*100, random.random()*100)
             self.food_list.append(Food(foodpos))
-        for guy in self.guys:
+        smallest_food_ind = self.get_distmatrix().idxmin(axis=1) 
+        for i, guy in enumerate(self.guys):
             # newpos = calc_newpos(old_pos=guy.pos, target=guy.target, speed=guy.speed)
-            guy.update_step(self.food_list)
+            target = (self.food_list[smallest_food_ind[i]].pos[0], self.food_list[smallest_food_ind[i]].pos[1])
+            guy.update_step(target = target)
+            # min_ind = food_list.argmin()
         
         self.guys_eat()
 
@@ -45,6 +49,7 @@ class Board:
         return df_results_guys#, df_results_board
     
     def guys_eat(self):
+        #df_distmatrix = self.get_distmatrix()
         df_distmatrix = self.get_distmatrix()
         # Simple first approximation: All the guys eat all the food they can within their distance of X
         # Get the distance for all guys to all food.
@@ -61,17 +66,16 @@ class Board:
 
     
     def get_distmatrix(self):
-
-        df_distmatrix = pd.DataFrame(index = range(len(self.guys)), columns = range(len(self.food_list))) 
-        for i, guy in enumerate(self.guys):
-            for j, food in enumerate(self.food_list):
-                dist_0 = guy.pos[0] - food.pos[0]
-                dist_1 = guy.pos[1] - food.pos[1]
-                distance = np.sqrt(dist_0**2 + dist_1**2)
-                df_distmatrix.iloc[i,j] = distance
-        return df_distmatrix
-
         
+        #Output: each row is a guy and each column is a food. The value is the distance
+        #between them
+        
+        guy_pos = [[guy.pos[0], guy.pos[1]] for guy in self.guys]
+        food_pos = [[food.pos[0], food.pos[1]] for food in self.food_list]
+        df_distmatrix = pd.DataFrame(pairwise_distances(guy_pos, food_pos))
+        return df_distmatrix
+        
+
 def find_eaten_food(df_distmatrix):
         # Find all food that will be eaten:
         food_distance = 1 # Length of mouth
