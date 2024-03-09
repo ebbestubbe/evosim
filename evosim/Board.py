@@ -5,15 +5,20 @@ import random
 from sklearn.metrics.pairwise import pairwise_distances
 SEED = 42
 class Board:
-    def __init__(self, guys, food_list):
+    def __init__(self, guys, min_food, food_list=None):
         self.guys = guys
-        self.food_list = food_list
+        self.min_food = min_food
+        if food_list is None:
+            self.food_list = []
+        else:
+            self.food_list = food_list
+        
         random.seed(SEED)
 
     def propagate(self):
         # Move all the guys.
         # Eat all the food and note the guys for eaten food.
-        while len(self.food_list) < 100:
+        while len(self.food_list) < self.min_food:
             foodpos = (random.random()*100, random.random()*100)
             self.food_list.append(Food(foodpos))
         smallest_food_ind = self.get_distmatrix().idxmin(axis=1) 
@@ -34,10 +39,16 @@ class Board:
                 state = guy.get_state()
                 guy_states[guy.name].append(state)
                 food_available.append(len(self.food_list))
-        df_results_guys = {
+        df_run_history = {
             name: pd.DataFrame.from_dict(states) for name, states in guy_states.items()
         }
-        df_results_guys = pd.concat(df_results_guys, axis=1)
+        df_run_history = pd.concat(df_run_history, axis=1)
+        df_guys_stats = pd.DataFrame(
+            data={
+                "speed": [guy.speed for guy in self.guys],
+                "eaten": [guy.food_eaten for guy in self.guys]
+            }
+        )
         # df_results_board = pd.DataFrame(
         #     columns=pd.MultiIndex.from_tuples(
         #             [
@@ -46,7 +57,7 @@ class Board:
         #         ),
         #     data=food_available
         # )
-        return df_results_guys#, df_results_board
+        return df_run_history, df_guys_stats#, df_results_board
     
     def guys_eat(self):
         df_distmatrix = self.get_distmatrix()

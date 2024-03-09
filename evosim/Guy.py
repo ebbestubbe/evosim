@@ -7,17 +7,22 @@ hruuid = HRID()
 from sklearn.metrics.pairwise import pairwise_distances
 import pandas as pd
 #Energy on hold for now, just move them towards current target.
+speed_scale = 0.5
 class Guy:
     def __init__(self, pos, speed, name=None):#, energy=0, energy_strat=None):
         self.pos = pos
         self.speed = speed
+        #self.speed_scale = 0.1
         self.target = None
+        
         if name is not None:
 
             self.name = name
         else:
             self.name = hruuid.generate()
-        self.food_eaten = 0
+        # Start with 1 food eaten makes no scientific sense, but in this case I want to
+        # use it as a weight for selecting who breeds. See it as ballots in a tombola
+        self.food_eaten = 1 
         # self.energy = energy
         # self.alive = True
         # if energy_strat is None:
@@ -35,9 +40,18 @@ class Guy:
         speed = 1
         return cls(pos=pos, speed=speed)
     
+    @classmethod
+    def spawn_child_with_mean(cls, speed_mean):
+        # Used for breeding new guys from the old guys speed. Ideally this should be done
+        # as a method on the Guy itself. But this way I don't have to keep track of
+        # objects, or make new objects.
+        pos = (random.random()*100, random.random()*100)
+        speed = max(np.random.normal(loc=speed_mean, scale = speed_scale), 0.001)
+        return cls(pos=pos, speed=speed)
+    
     def spawn_child(self):
         pos = (random.random()*100, random.random()*100)
-        speed = max(np.random.normal(loc=self.speed, scale = 0.1), 0.001)
+        speed = max(np.random.normal(loc=self.speed, scale = speed_scale), 0.001)
         return Guy(pos=pos, speed=speed)
 
     def update_step(self,target):

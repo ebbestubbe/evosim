@@ -1,3 +1,8 @@
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy import stats
+import joypy
+import seaborn as sns
 
 colors = [
     "#000000",
@@ -66,16 +71,46 @@ colors = [
     "#E85EBE",
 ]
 
-def plot_board(guys, df_guys, ax):
+def plot_board(guys, df_guys_history, df_guys_stats, ax):
     # Plot the guys positions over time
-    guy_names = df_guys.columns.get_level_values(0).unique()
+    guy_names = df_guys_history.columns.get_level_values(0).unique()
     #colors = ['r','b','k','y','m','c']
     guy_dict = {guy.name: guy for guy in guys}
     for i, guy_name in enumerate(guy_names):
         color = colors[i]
-        ax['map'].plot(df_guys[(guy_name, "posx")], df_guys[(guy_name, "posy")], marker='.',color=color)
-        ax['food_eaten'].plot(df_guys[(guy_name, "food_eaten")], color=color, label=f"speed: {guy_dict[guy_name].speed:.2f}; eaten: {guy_dict[guy_name].food_eaten}")
-    ax['food_eaten'].legend()
+        ax['map'].plot(df_guys_history[(guy_name, "posx")], df_guys_history[(guy_name, "posy")], marker='.',color=color)
+        ax['food_eaten'].plot(df_guys_history[(guy_name, "food_eaten")], color=color, label=f"speed: {guy_dict[guy_name].speed:.2f}; eaten: {guy_dict[guy_name].food_eaten}")
+    #ax['food_eaten'].legend()
+    
+    plot_hist(array=df_guys_stats['speed'], color=color, ax=ax["speed_histogram"])
     #ax["food_available"].plot(df_board[("board", "food_available")])
 
+def plot_hist(array, color, ax):
+    bins = np.linspace(array.min(), array.max(), 10)
+    ax.hist(array, color=color, bins=bins, density=True)
+    kde = stats.gaussian_kde(array)
+    xx = np.linspace(array.min(), array.max(), 1000)
+    ax.plot(xx, kde(xx))
 
+def plot_multiple_generations(df_guys):
+
+    # fig,ax = plt.subplot_mosaic(
+    #     [
+    #         ["foo"]
+    #     ]
+    # )
+    # fig,ax = joypy.joyplot(data=df_guys, by='generation', column='speed')
+    fig,ax = plt.subplots()
+    sns.scatterplot(data=df_guys, x= 'speed', y='eaten', hue='generation', ax=ax)
+    # Total food each guy has eaten
+    #Their speed
+    # generation number
+    # plot average, 5, 25, 50, 75. 95
+    grouped = df_guys.groupby("generation")
+    fig,ax = plt.subplots()
+    ax.plot(grouped['speed'].mean(), color='black', linewidth=3)
+    ax.plot(grouped['speed'].quantile(0.05), color='red', linestyle='--', linewidth=1)
+    ax.plot(grouped['speed'].quantile(0.25), color='red', linestyle='--', linewidth=2)
+    ax.plot(grouped['speed'].quantile(0.50), color='red', linewidth=3)
+    ax.plot(grouped['speed'].quantile(0.75), color='red', linestyle='--', linewidth=2)
+    ax.plot(grouped['speed'].quantile(0.95), color='red', linestyle='--', linewidth=1)
