@@ -22,7 +22,7 @@ class Guy:
             self.name = hruuid.generate()
         # Start with 1 food eaten makes no scientific sense, but in this case I want to
         # use it as a weight for selecting who breeds. See it as ballots in a tombola
-        self.food_eaten = 1 
+        self.food_eaten = 1
         # self.energy = energy
         # self.alive = True
         # if energy_strat is None:
@@ -58,7 +58,10 @@ class Guy:
 
         self.target=target
 
-        self.move_towards_target()
+        moved = self.move_towards_target()
+        speed_food_scale = 0.05
+        if moved:
+            self.food_eaten = max(0.01, self.food_eaten-self.speed*speed_food_scale)
     
     def update_target(self, food_list):
         if len(food_list) == 0:
@@ -79,9 +82,10 @@ class Guy:
 
     def move_towards_target(self):
         if self.target is None: #Do nothing
-            return
+            return False
         else: # Move towards target
             self.pos = calc_newpos(old_pos=self.pos, target=self.target, speed=self.speed)
+            return True
 
     # def update_energy(self):
     #     self.energy_strat()

@@ -37,8 +37,10 @@ def single_experiment():
     plt.show()
 
 def running_experiment():
-    n_guys = 50
-    n_generations = 500
+    n_guys = 20
+    n_generations = 200
+    turns_per_generation = 40
+    min_food = np.round(n_guys/2)
     breeders = pd.DataFrame(
         data={
             "speed": [1 for _ in range(n_guys)],
@@ -56,8 +58,8 @@ def running_experiment():
         new_guys = [Guy.spawn_child_with_mean(guy.speed) for _,guy in breeders.iterrows()]
         guys = new_guys
         print([f"{guy.speed:.2f}" for guy in guys])
-        board = Board(guys=guys, min_food = np.round(n_guys/2))
-        df_run_history, df_guys_stats = board.propagate_n(100)
+        board = Board(guys=guys, min_food=min_food)
+        df_run_history, df_guys_stats = board.propagate_n(turns_per_generation)
 
         # Select guys for breeding:
         breeders = df_guys_stats.sample(
@@ -85,5 +87,19 @@ def running_experiment():
     visualize.plot_multiple_generations(concatenated_df)
     plt.show()
 
+def run_multiple_experiments():
+    n_guys = 20
+    n_generations = 200
+    turns_per_generation = 40
+    min_food = np.round(n_guys/2)
+    breeders = pd.DataFrame(
+        data={
+            "speed": [1 for _ in range(n_guys)],
+            "eaten": [1 for _ in range(n_guys)]
+        }
+    )
+
+
+    
 if __name__ == "__main__":
     main()
